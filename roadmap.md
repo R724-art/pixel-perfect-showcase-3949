@@ -1,0 +1,4 @@
+- [ ] Build the shared recruiter workspace shell and dashboard.
+- [ ] Add candidate list, URL-backed search and filters, candidate profiles, and honest resume preview states.
+- [ ] Add PDF selection flow, mock login/register screens, and settings.
+- [ ] Verify routes, search interaction, responsive layout, and preview diagnostics.
