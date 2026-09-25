@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Application structure
+- Use a pathless TanStack workspace layout with route-level screens and typed, centralized mock API services so the recruiter frontend can connect to FastAPI without moving product logic into presentation code.
