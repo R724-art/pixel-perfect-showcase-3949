@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkspaceRouteImport } from './routes/_workspace'
 import { Route as WorkspaceIndexRouteImport } from './routes/_workspace.index'
+import { Route as WorkspaceCandidatesRouteImport } from './routes/_workspace.candidates'
+import { Route as WorkspaceSearchRouteImport } from './routes/_workspace.search'
+import { Route as WorkspaceCandidatesIdRouteImport } from './routes/_workspace.candidates.$id'
 
 const WorkspaceRoute = WorkspaceRouteImport.update({
   id: '/_workspace',
@@ -21,24 +24,54 @@ const WorkspaceIndexRoute = WorkspaceIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WorkspaceRoute,
 } as any)
+const WorkspaceCandidatesRoute = WorkspaceCandidatesRouteImport.update({
+  id: '/candidates',
+  path: '/candidates',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceSearchRoute = WorkspaceSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceCandidatesIdRoute = WorkspaceCandidatesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => WorkspaceCandidatesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof WorkspaceIndexRoute
+  '/candidates': typeof WorkspaceCandidatesRouteWithChildren
+  '/search': typeof WorkspaceSearchRoute
+  '/candidates/$id': typeof WorkspaceCandidatesIdRoute
 }
 export interface FileRoutesByTo {
+  '/candidates': typeof WorkspaceCandidatesRouteWithChildren
+  '/search': typeof WorkspaceSearchRoute
   '/': typeof WorkspaceIndexRoute
+  '/candidates/$id': typeof WorkspaceCandidatesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_workspace': typeof WorkspaceRouteWithChildren
+  '/_workspace/candidates': typeof WorkspaceCandidatesRouteWithChildren
+  '/_workspace/search': typeof WorkspaceSearchRoute
   '/_workspace/': typeof WorkspaceIndexRoute
+  '/_workspace/candidates/$id': typeof WorkspaceCandidatesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/candidates' | '/search' | '/candidates/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_workspace' | '/_workspace/'
+  to: '/candidates' | '/search' | '/' | '/candidates/$id'
+  id:
+    | '__root__'
+    | '/_workspace'
+    | '/_workspace/candidates'
+    | '/_workspace/search'
+    | '/_workspace/'
+    | '/_workspace/candidates/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -61,14 +94,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceIndexRouteImport
       parentRoute: typeof WorkspaceRoute
     }
+    '/_workspace/candidates': {
+      id: '/_workspace/candidates'
+      path: '/candidates'
+      fullPath: '/candidates'
+      preLoaderRoute: typeof WorkspaceCandidatesRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/search': {
+      id: '/_workspace/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof WorkspaceSearchRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/candidates/$id': {
+      id: '/_workspace/candidates/$id'
+      path: '/$id'
+      fullPath: '/candidates/$id'
+      preLoaderRoute: typeof WorkspaceCandidatesIdRouteImport
+      parentRoute: typeof WorkspaceCandidatesRoute
+    }
   }
 }
 
+interface WorkspaceCandidatesRouteChildren {
+  WorkspaceCandidatesIdRoute: typeof WorkspaceCandidatesIdRoute
+}
+
+const WorkspaceCandidatesRouteChildren: WorkspaceCandidatesRouteChildren = {
+  WorkspaceCandidatesIdRoute: WorkspaceCandidatesIdRoute,
+}
+
+const WorkspaceCandidatesRouteWithChildren =
+  WorkspaceCandidatesRoute._addFileChildren(WorkspaceCandidatesRouteChildren)
+
 interface WorkspaceRouteChildren {
+  WorkspaceCandidatesRoute: typeof WorkspaceCandidatesRouteWithChildren
+  WorkspaceSearchRoute: typeof WorkspaceSearchRoute
   WorkspaceIndexRoute: typeof WorkspaceIndexRoute
 }
 
 const WorkspaceRouteChildren: WorkspaceRouteChildren = {
+  WorkspaceCandidatesRoute: WorkspaceCandidatesRouteWithChildren,
+  WorkspaceSearchRoute: WorkspaceSearchRoute,
   WorkspaceIndexRoute: WorkspaceIndexRoute,
 }
 
