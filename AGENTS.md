@@ -11,3 +11,4 @@
 
 ## Application structure
 - Use a pathless TanStack workspace layout with route-level screens and typed, centralized mock API services so the recruiter frontend can connect to FastAPI without moving product logic into presentation code.
+- Keep account interactions and resume selection frontend-only through mock services; do not imply account data or files persist before the connected API exists.
