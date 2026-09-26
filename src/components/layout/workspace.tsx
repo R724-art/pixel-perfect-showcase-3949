@@ -1,9 +1,10 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { Archive, Bell, BriefcaseBusiness, ChevronDown, CircleHelp, FileUp, LayoutDashboard, LogOut, Menu, Search, Settings, Users, X } from "lucide-react";
+import { Bell, CircleHelp, FileUp, LayoutDashboard, LogOut, Menu, Search, Settings, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { authService } from "@/lib/api/auth-service";
+import { useNavigate } from "@tanstack/react-router";
 
 const links = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -46,7 +47,7 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
       <div className="flex items-center gap-3 border-t border-border px-2 pt-3">
         <span className="grid size-9 place-items-center rounded-md bg-secondary text-xs font-semibold">DO</span>
         <span className="min-w-0 flex-1"><span className="block truncate text-xs font-medium">Dana Okafor</span><span className="mt-0.5 block truncate text-[11px] text-muted-foreground">Senior recruiter</span></span>
-        <Button variant="ghost" size="icon" aria-label="Sign out" title="Sign out" onClick={() => void authService.logout()}><LogOut size={15} /></Button>
+        <Button variant="ghost" size="icon" aria-label="Sign out" title="Sign out" onClick={() => { void authService.logout().then(() => navigate({ to: "/login" })); }}><LogOut size={15} /></Button>
       </div>
     </div>
   </div>;
@@ -54,6 +55,7 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
 
 export function WorkspaceLayout() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const current = links.find((item) => item.to === pathname || (item.to !== "/" && pathname.startsWith(item.to)));
   return <div className="min-h-screen bg-background text-foreground">

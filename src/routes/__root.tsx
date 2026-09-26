@@ -77,11 +77,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Archivum | Recruiter Workspace" },
+      { name: "description", content: "A focused workspace for finding and managing candidate resumes." },
+      { name: "author", content: "Archivum" },
+      { property: "og:title", content: "Archivum | Recruiter Workspace" },
+      { property: "og:description", content: "A focused workspace for finding and managing candidate resumes." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -116,6 +116,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    if (window.localStorage.getItem("archivum-theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
