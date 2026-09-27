@@ -34,6 +34,8 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
+  const navigate = useNavigate();
+  onNavigate ??= () => {};
   return <div className="flex h-full flex-col px-3 py-4">
     <Brand />
     <div className="mb-2 mt-7 px-3 font-mono text-[9px] uppercase text-muted-foreground">Workspace</div>
@@ -55,7 +57,6 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
 
 export function WorkspaceLayout() {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const current = links.find((item) => item.to === pathname || (item.to !== "/" && pathname.startsWith(item.to)));
   return <div className="min-h-screen bg-background text-foreground">

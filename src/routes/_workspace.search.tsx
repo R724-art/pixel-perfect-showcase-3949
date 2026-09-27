@@ -11,8 +11,17 @@ import type { CandidateSearchParams } from "@/types/candidate";
 interface SearchState { q?: string; minExperience?: string; maxExperience?: string; skills?: string; role?: string; location?: string; education?: string; freshness?: string; page?: string }
 const skillOptions = ["Python", "FastAPI", "Django", "Java", "Spring Boot", "React", "Angular", "AWS", "Docker", "MongoDB", "PostgreSQL"];
 const roleOptions = ["Python Developer", "Backend Developer", "Full Stack Developer", "Java Developer", "Frontend Developer", "Data Engineer"];
-const parseSearch = (raw: Record<string, unknown>): SearchState => ({ q: typeof raw.q === "string" ? raw.q : "", minExperience: typeof raw.minExperience === "string" ? raw.minExperience : "", maxExperience: typeof raw.maxExperience === "string" ? raw.maxExperience : "", skills: typeof raw.skills === "string" ? raw.skills : "", role: typeof raw.role === "string" ? raw.role : "", location: typeof raw.location === "string" ? raw.location : "", education: typeof raw.education === "string" ? raw.education : "any", freshness: typeof raw.freshness === "string" ? raw.freshness : "any", page: typeof raw.page === "string" ? raw.page : "1" });
-const paramsFor = (state: SearchState): CandidateSearchParams => ({ query: state.q || undefined, minExperience: state.minExperience ? Number(state.minExperience) : undefined, maxExperience: state.maxExperience ? Number(state.maxExperience) : undefined, skills: state.skills ? state.skills.split(",").filter(Boolean) : undefined, role: state.role || undefined, location: state.location || undefined, education: state.education || undefined, freshness: state.freshness || undefined });
+const parseSearch = (raw: Record<string, unknown>): SearchState => ({ q: typeof raw["q"] === "string" ? raw["q"] : "", minExperience: typeof raw["minExperience"] === "string" ? raw["minExperience"] : "", maxExperience: typeof raw["maxExperience"] === "string" ? raw["maxExperience"] : "", skills: typeof raw["skills"] === "string" ? raw["skills"] : "", role: typeof raw["role"] === "string" ? raw["role"] : "", location: typeof raw["location"] === "string" ? raw["location"] : "", education: typeof raw["education"] === "string" ? raw["education"] : "any", freshness: typeof raw["freshness"] === "string" ? raw["freshness"] : "any", page: typeof raw["page"] === "string" ? raw["page"] : "1" });
+const paramsFor = (state: SearchState): CandidateSearchParams => ({
+  ...(state.q ? { query: state.q } : {}),
+  ...(state.minExperience ? { minExperience: Number(state.minExperience) } : {}),
+  ...(state.maxExperience ? { maxExperience: Number(state.maxExperience) } : {}),
+  ...(state.skills ? { skills: state.skills.split(",").filter(Boolean) } : {}),
+  ...(state.role ? { role: state.role } : {}),
+  ...(state.location ? { location: state.location } : {}),
+  ...(state.education ? { education: state.education } : {}),
+  ...(state.freshness ? { freshness: state.freshness } : {}),
+});
 
 export const Route = createFileRoute("/_workspace/search")({
   validateSearch: parseSearch,
