@@ -35,11 +35,10 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 
 function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
-  onNavigate ??= () => {};
   return <div className="flex h-full flex-col px-3 py-4">
     <Brand />
     <div className="mb-2 mt-7 px-3 font-mono text-[9px] uppercase text-muted-foreground">Workspace</div>
-    <SidebarNav onNavigate={onNavigate} />
+    <SidebarNav {...(onNavigate ? { onNavigate } : {})} />
     <div className="mt-auto space-y-3 pt-6">
       <div className="rounded-md border border-border bg-surface/70 p-3">
         <div className="font-mono text-[9px] uppercase text-muted-foreground">Workspace</div>
